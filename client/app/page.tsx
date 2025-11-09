@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-white to-gray-100 text-gray-800">
-      {/* Navbar */}
+  
       <header className="flex justify-between items-center px-8 py-4 shadow-sm bg-white">
         <h1 className="text-2xl font-semibold tracking-tight">The Archive</h1>
         <Link href={'/register'}>
@@ -13,7 +13,6 @@ export default function Home() {
         </Link>
       </header>
 
-      {/* Hero Section */}
       <main className="flex flex-col items-center justify-center flex-1 text-center px-6">
         <h2 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
           Welcome to <span className="text-gray-700">The Archive</span>
@@ -30,7 +29,6 @@ export default function Home() {
         </Link>
       </main>
 
-      {/* Footer */}
       <footer className="py-4 text-center text-sm text-gray-500 border-t">
         © {new Date().getFullYear()} The Archive. All rights reserved.
       </footer>

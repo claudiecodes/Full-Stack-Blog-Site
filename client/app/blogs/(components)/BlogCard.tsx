@@ -3,6 +3,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { useParams, useRouter } from "next/navigation";
 
 interface Blog {
   id: number;
@@ -13,6 +14,7 @@ interface Blog {
 export default function BlogCard() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const router = useRouter();
 
   async function fetchBlogs() {
     try {
@@ -25,6 +27,13 @@ export default function BlogCard() {
     }
   }
 
+  async function handleReadMore(id:number) {
+    try {
+      router.push(`/blogs/${id}`);
+    } catch (error) {
+      console.log(error);
+    } 
+  }
   useEffect(() => {
     fetchBlogs();
   }, []);
@@ -61,7 +70,10 @@ export default function BlogCard() {
                 </p>
 
                 <div className="mt-5 flex justify-end">
-                  <button className="text-xs font-medium border border-white/30 rounded-full px-3 py-1 hover:bg-white hover:text-black transition">
+                  <button
+                    onClick={()=>handleReadMore(el.id)}
+                    className="text-xs font-medium border border-white/30 rounded-full px-3 py-1 hover:bg-white hover:text-black transition"
+                  >
                     Read More →
                   </button>
                 </div>

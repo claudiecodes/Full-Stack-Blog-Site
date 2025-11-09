@@ -3,7 +3,7 @@ const { Post } = require("../models");
 class postController {
   static read = async (_req, res) => {
     try {
-      const blogs = await Post.findAll();
+      const blogs = await Post.findAll({order: [['createdAt', 'DESC']]});
 
       res.status(200).json(blogs);
     } catch (error) {
