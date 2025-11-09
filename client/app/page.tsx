@@ -7,9 +7,9 @@ export default function Home() {
       <header className="flex justify-between items-center px-8 py-4 shadow-sm bg-white">
         <h1 className="text-2xl font-semibold tracking-tight">The Archive</h1>
         <Link href={'/register'}>
-        <button className="px-4 py-2 border rounded-lg hover:bg-gray-800 hover:text-white transition-all">
-          Get Started
-        </button>
+        <button className="px-6 py-3 bg-gray-900 text-white rounded-xl shadow-md hover:bg-gray-700 transition-all">
+            Get Started
+          </button>
         </Link>
       </header>
 
