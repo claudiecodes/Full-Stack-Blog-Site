@@ -1,9 +1,10 @@
 const { Post } = require("../models");
+const { User } = require("../models");
 
 class postController {
   static read = async (_req, res) => {
     try {
-      const blogs = await Post.findAll({order: [['createdAt', 'DESC']]});
+      const blogs = await Post.findAll({ order: [["createdAt", "DESC"]] });
 
       res.status(200).json(blogs);
     } catch (error) {
@@ -52,6 +53,7 @@ class postController {
 
   static delete = async (req, res) => {
     try {
+      
       const { postId } = req.params;
 
       const deletedPost = await Post.findOne({ where: { id: postId } });
@@ -70,13 +72,21 @@ class postController {
   static detailById = async (req, res) => {
     try {
       const { postId } = req.params;
-      const foundBlog = await Post.findOne({ where: { id: postId } });
+      const foundBlog = await Post.findOne({
+        where: { id: postId },
+        include: {
+          model: User,
+          attributes: ["name"],
+        },
+      });
 
       res.status(200).json(foundBlog);
     } catch (error) {
       console.log(error);
     }
   };
+
+ 
 }
 
 module.exports = postController;

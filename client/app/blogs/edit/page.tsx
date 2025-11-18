@@ -1,9 +1,9 @@
-import EditCard from "./(components)/page";
+import EditCard from "./(components)/EditCard";
 
 export default function Edit() {
   return (
     <>
-      <EditCard />
+      <EditCard/>
     </>
   );
 }

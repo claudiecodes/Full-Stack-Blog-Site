@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User, Post } = require("../models");
 const jwt = require("jsonwebtoken");
 
 class userController {
@@ -23,6 +23,20 @@ class userController {
       });
     } catch (error) {
       throw error;
+    }
+  };
+
+  static postByAuthorId = async (req, res) => {
+    try {
+      const {userId} = req.info
+      const blog = await Post.findAll({where:{userId},  include: {
+          model: User,
+          attributes: ["name"],
+        }});
+
+      res.status(200).json(blog);
+    } catch (error) {
+      console.log(error);
     }
   };
 }

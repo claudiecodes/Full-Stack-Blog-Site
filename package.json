@@ -1,0 +1,21 @@
+{
+  "name": "full-stack-blog-site",
+  "version": "1.0.0",
+  "description": "This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"cd client && npm run dev\" \"cd server && npm run dev\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/claudiecodes/Full-Stack-Blog-Site.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/claudiecodes/Full-Stack-Blog-Site/issues"
+  },
+  "homepage": "https://github.com/claudiecodes/Full-Stack-Blog-Site#readme"
+}

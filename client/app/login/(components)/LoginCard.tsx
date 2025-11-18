@@ -2,8 +2,9 @@
 
 import axios from "axios";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function LoginCard() {
   const [email, setEmail] = useState<string>("");
@@ -11,8 +12,7 @@ export default function LoginCard() {
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const router = useRouter();
-
-
+  const [token, setToken] = useState<string>("");
 
   async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -24,12 +24,11 @@ export default function LoginCard() {
         `${process.env.NEXT_PUBLIC_API_URL}/login`,
         { email, password }
       );
-
-      setMessage("Login successful!");
-
-      if (data.token) localStorage.setItem("token", data.token);
-
-      router.push("/blogs");
+      if (data?.access_token) {
+        setToken(data.access_token);
+      }
+ 
+      router.push('/profile')
     } catch (error: any) {
       setMessage(error.response?.data?.message || "Login failed");
     } finally {
@@ -37,6 +36,9 @@ export default function LoginCard() {
     }
   }
 
+
+  localStorage.setItem("access_token", token);
+  
   return (
     <>
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-black via-neutral-900 to-gray-800 px-4">
@@ -91,17 +93,17 @@ export default function LoginCard() {
           </form>
 
           {message && (
-            <p className="text-center mt-4 text-sm text-gray-300">{message}</p>
+            <p className="text-center mt-4 text-sm text-red-300">{message}</p>
           )}
 
           <p className="text-gray-400 text-center text-sm mt-6">
             Don’t have an account?{" "}
-            <a
+            <Link
               href="/register"
               className="text-white hover:text-gray-300 underline underline-offset-2"
             >
               Register
-            </a>
+            </Link>
           </p>
         </motion.div>
       </div>

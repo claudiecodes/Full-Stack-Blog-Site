@@ -15,10 +15,9 @@ function authentication(req, res, next) {
 
     req.info = {
       userId: payload.id,
+      name: payload.name,
       email: payload.email,
     };
-
-    
 
     next();
   } catch (error) {

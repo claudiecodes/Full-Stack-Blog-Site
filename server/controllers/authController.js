@@ -40,6 +40,7 @@ class authController {
 
       const access_token = signToken({
         id: foundUser.id,
+        name: foundUser.name,
         email: foundUser.email,
       });
 

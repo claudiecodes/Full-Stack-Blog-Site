@@ -19,6 +19,16 @@ function errorHandler(error, req, res, next) {
     message = "Please login first"
   }
 
+  if(error.name == "NotFound"){
+    status = 404;
+    message = "Data not found"
+  }
+
+  if(error.name == "Unauthorized"){
+    status = 403;
+    message = "You are unauthorized"
+  }
+
   res.status(status).json({ message });
 }
 

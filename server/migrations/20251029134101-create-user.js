@@ -22,10 +22,14 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      role: {
-        type: Sequelize.ENUM("user", "admin"),
+      image:{
+        type: Sequelize.STRING,
+        defaultValue:"/avatar.jpg"
+      },
+      tier: {
+        type: Sequelize.ENUM("free", "premium"),
         allowNull: false,
-        defaultValue: "user",
+        defaultValue: "free",
       },
       createdAt: {
         allowNull: false,
