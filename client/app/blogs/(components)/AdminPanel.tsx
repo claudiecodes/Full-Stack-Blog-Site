@@ -60,7 +60,7 @@ export default function AdminPanel() {
           className="flex items-center gap-3 focus:outline-none"
         >
           <div className="relative w-10 h-10 rounded-full overflow-hidden border border-white/30 hover:border-white/70 transition">
-            <Image src="" alt="Admin Profile" fill className="object-cover" />
+            <Image src="https://images.unsplash.com/photo-1728577740843-5f29c7586afe?q=80&w=1760&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Admin Profile" fill className="object-cover" unoptimized/>
           </div>
           <span className="hidden sm:block text-sm font-medium">{name}</span>
         </button>
@@ -75,12 +75,12 @@ export default function AdminPanel() {
               className="absolute right-0 mt-3 w-44 bg-black border border-white/20 rounded-xl shadow-xl overflow-hidden"
             >
               <ul className="flex flex-col text-sm text-gray-200">
+                <Link href="/dashboard" className="px-4 py-2 hover:bg-white/10 cursor-pointer transition">
+                  Dashboard
+                </Link>
                 <Link href="/profile" className="px-4 py-2 hover:bg-white/10 cursor-pointer transition">
                   Profile
                 </Link>
-                <li className="px-4 py-2 hover:bg-white/10 cursor-pointer transition">
-                  Dashboard
-                </li>
                 <li className="px-4 py-2 hover:bg-white/10 cursor-pointer transition">
                   Settings
                 </li>

@@ -39,21 +39,20 @@ export default function BlogCardById({
     }
   }
 
-
-
   async function handleDelete(id: number) {
     try {
       const { data } = await axios.delete(
         `${process.env.NEXT_PUBLIC_API_URL}/posts/${id}`,
         { headers: { Authorization: `Bearer ${accessToken}` } }
       );
-      router.refresh()
-      fetchBlogsByAuthor()
+      router.refresh();
+      fetchBlogsByAuthor();
     } catch (error) {
       console.log(error);
     }
   }
 
+ 
   useEffect(() => {
     fetchBlogsByAuthor();
   }, [accessToken]);
@@ -89,10 +88,9 @@ export default function BlogCardById({
           transition
         "
               >
-                
                 <Link href={`/blogs/edit/${el.id}`}>
-                <button
-                  className="
+                  <button
+                    className="
                   text-xs 
                   px-3 py-1 
                   rounded-md 
@@ -100,11 +98,10 @@ export default function BlogCardById({
                   hover:bg-white/20 
                   transition
                   "
-                  
                   >
-                  Edit
-                </button>
-                  </Link>
+                    Edit
+                  </button>
+                </Link>
 
                 <button
                   className="

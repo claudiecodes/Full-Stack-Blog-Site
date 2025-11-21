@@ -1,7 +1,9 @@
-export default function BlogEdit(id:number){
+import EditCard from "../(components)/EditCard";
+
+export default function BlogEdit(){
     return(
         <>
-        this is {id}
+        <EditCard/>
         </>
     )
 }

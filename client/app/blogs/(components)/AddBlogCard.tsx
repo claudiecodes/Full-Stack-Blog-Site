@@ -18,17 +18,17 @@ export default function AddBlogCard() {
     setMessage("");
 
     const token = localStorage.getItem("access_token");
+    
 
     try {
       const { data } = await axios.post(
-        "http://localhost:3000/posts",
+        `${process.env.NEXT_PUBLIC_API_URL}/posts`,
         {
           title,
           description,
         },
         {
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         }

@@ -2,89 +2,139 @@
 
 import axios from "axios";
 import { motion } from "framer-motion";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
+interface Author {
+  name: string;
+}
 
-export default function EditCard(id:number) {
+interface Blog {
+  id: number;
+  title: string;
+  description: string;
+  authorId: number;
+  User: Author;
+  createdAt: string;
+}
+
+export default function EditCard() {
   const router = useRouter();
-  const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState<string>("")
-  const [title, setTitle] = useState<string>("")
-  const [description, setDescription] = useState<string>("")
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [token, setToken] = useState<string | null>("");
+  const params = useParams();
+  const id = params.id;
+  const [blog, setBlog] = useState<Blog | null>();
 
-  async function handleEdit(id: number) {
+  async function fetchBlogById() {
     try {
-      const { data } = await axios.put(
-        `${process.env.NEXT_PUBLIC_API_URL}/posts/${id}`
+      const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/posts/${id}`,
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-
-      router.refresh();
+      setBlog(data);
     } catch (error) {
       console.log(error);
     }
   }
-  return <>
-        <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-black via-neutral-900 to-gray-800 text-white px-4">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="w-full max-w-lg bg-white/5 border border-white/20 rounded-2xl backdrop-blur-xl shadow-2xl p-8"
-      >
-        <h2 className="text-center text-3xl font-bold mb-3">Write a Blog</h2>
-        <p className="text-gray-400 text-center mb-8">
-          Share your thoughts with{" "}
-          <span className="font-semibold text-gray-200">The Archive</span>.
-        </p>
 
-        <form onSubmit={()=>handleEdit(id)} className="flex flex-col gap-5">
-          <div>
-            <label className="block text-gray-300 mb-1 text-sm">Title</label>
-            <input
-              type="text"
-              placeholder="Enter your blog title..."
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-              className="w-full rounded-lg bg-black/30 border border-white/20 text-white px-4 py-2 placeholder-gray-500 focus:ring-2 focus:ring-gray-400 focus:outline-none"
-            />
-          </div>
+  async function handleEdit(e: React.FormEvent) {
+    e.preventDefault();
+    try {
+      const { data } = await axios.put(
+        `${process.env.NEXT_PUBLIC_API_URL}/posts/${id}`,
+        { title, description },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
-          <div>
-            <label className="block text-gray-300 mb-1 text-sm">Description</label>
-            <textarea
-              placeholder="Write your blog description..."
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-              rows={5}
-              className="w-full rounded-lg bg-black/30 border border-white/20 text-white px-4 py-2 placeholder-gray-500 focus:ring-2 focus:ring-gray-400 focus:outline-none resize-none"
-            ></textarea>
-          </div>
+      router.push("/blogs");
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="mt-2 bg-white text-black hover:bg-gray-200 disabled:bg-gray-600 disabled:text-gray-300 font-semibold rounded-lg py-2 transition-colors"
-          >
-            {loading ? "Adding..." : "Add Blog"}
-          </button>
-        </form>
+  useEffect(() => {
+    const getToken = localStorage.getItem("access_token");
+    setToken(getToken);
+  }, []);
 
-        {message && (
-          <p className="text-center mt-4 text-sm text-gray-300">{message}</p>
-        )}
+  useEffect(() => {
+    if (blog) {
+      setTitle(blog?.title);
+      setDescription(blog?.description);
+    }
+  }, [blog]);
 
-        <p className="text-gray-400 text-center text-sm mt-6">
-          <a
-            href="/blogs"
-            className="text-white hover:text-gray-300 underline underline-offset-2"
-          >
-            ← Back to Archive
-          </a>
-        </p>
-      </motion.div>
-    </div>
-  </>;
+  useEffect(() => {
+    fetchBlogById();
+  }, [id]);
+
+  return (
+    <>
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-black via-neutral-900 to-gray-800 text-white px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="w-full max-w-lg bg-white/5 border border-white/20 rounded-2xl backdrop-blur-xl shadow-2xl p-8"
+        >
+          <h2 className="text-center text-3xl font-bold mb-3">Write a Blog</h2>
+          <p className="text-gray-400 text-center mb-8">
+            Share your thoughts with{" "}
+            <span className="font-semibold text-gray-200">The Archive</span>.
+          </p>
+
+          <form onSubmit={handleEdit} className="flex flex-col gap-5">
+            <div>
+              <label className="block text-gray-300 mb-1 text-sm">Title</label>
+              <input
+                type="text"
+                onChange={(e) => setTitle(e.target.value)}
+                required
+                className="w-full rounded-lg bg-black/30 border border-white/20 text-white px-4 py-2 placeholder-gray-500 focus:ring-2 focus:ring-gray-400 focus:outline-none"
+                value={title}
+              />
+            </div>
+
+            <div>
+              <label className="block text-gray-300 mb-1 text-sm">
+                Description
+              </label>
+              <textarea
+                onChange={(e) => setDescription(e.target.value)}
+                required
+                rows={5}
+                className="w-full rounded-lg bg-black/30 border border-white/20 text-white px-4 py-2 placeholder-gray-500 focus:ring-2 focus:ring-gray-400 focus:outline-none resize-none"
+                value={description}
+              ></textarea>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="mt-2 bg-white text-black hover:bg-gray-200 disabled:bg-gray-600 disabled:text-gray-300 font-semibold rounded-lg py-2 transition-colors"
+            >
+              {loading ? "Saving..." : "Save Blog"}
+            </button>
+          </form>
+
+          {message && (
+            <p className="text-center mt-4 text-sm text-gray-300">{message}</p>
+          )}
+
+          <p className="text-gray-400 text-center text-sm mt-6">
+            <a
+              href="/blogs"
+              className="text-white hover:text-gray-300 underline underline-offset-2"
+            >
+              ← Back to Archive
+            </a>
+          </p>
+        </motion.div>
+      </div>
+    </>
+  );
 }

@@ -14,6 +14,7 @@ export default function LoginCard() {
   const router = useRouter();
   const [token, setToken] = useState<string>("");
 
+
   async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
@@ -27,8 +28,8 @@ export default function LoginCard() {
       if (data?.access_token) {
         setToken(data.access_token);
       }
- 
-      router.push('/profile')
+
+      router.push("/dashboard");
     } catch (error: any) {
       setMessage(error.response?.data?.message || "Login failed");
     } finally {
@@ -36,9 +37,12 @@ export default function LoginCard() {
     }
   }
 
+  useEffect(() => {
+    if (token) {
+      localStorage.setItem("access_token", token);
+    }
+  }, [token]);
 
-  localStorage.setItem("access_token", token);
-  
   return (
     <>
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-black via-neutral-900 to-gray-800 px-4">

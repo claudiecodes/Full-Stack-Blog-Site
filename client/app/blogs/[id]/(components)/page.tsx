@@ -5,22 +5,23 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-interface Author {
+type Author = {
   name: String;
-}
-interface Blog {
+};
+type Blog = {
   id: number;
   title: string;
   description: string;
   content: string;
   createdAt?: string;
   User: Author;
-}
+};
 
 export default function BlogDetailCard() {
-  const { id } = useParams<{ id: string }>();
+  const params = useParams();
+  const id = params.id as string;
   const [loading, setLoading] = useState<boolean>(true);
-  const [blog, setBlog] = useState<Blog | null>(null);
+  const [blog, setBlog] = useState<Blog | null>();
 
   const fetchBlogId = async () => {
     try {
@@ -29,6 +30,7 @@ export default function BlogDetailCard() {
       );
 
       setBlog(data);
+      
     } catch (error) {
       console.log(error);
     } finally {
@@ -36,12 +38,10 @@ export default function BlogDetailCard() {
     }
   };
 
-  useEffect(() => {
-    console.log(blog);
-  });
-  useEffect(() => {
-    fetchBlogId();
-  }, [id]);
+
+useEffect(()=>{
+  fetchBlogId()
+},[id])
 
   return (
     <>
@@ -53,10 +53,10 @@ export default function BlogDetailCard() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <Link href={'/blogs'}>
-            <h1 className="text-4xl font-extrabold tracking-tight mb-2">
-              The Archive
-            </h1>
+            <Link href={"/blogs"}>
+              <h1 className="text-4xl font-extrabold tracking-tight mb-2">
+                The Archive
+              </h1>
             </Link>
             <p className="text-gray-400 text-sm uppercase tracking-widest">
               Minimalist Reflections
@@ -75,12 +75,12 @@ export default function BlogDetailCard() {
               className="bg-white/5 border border-white/20 rounded-2xl backdrop-blur-lg shadow-xl p-10"
             >
               <h2 className="text-3xl font-bold text-white mb-4">
-                {blog.title}
+                {blog?.title}
               </h2>
               <p className="text-gray-400 text-sm mb-8">
-                written by {blog.User.name}
+                written by {blog?.User.name}
               </p>
-              {blog.createdAt && (
+              {blog?.createdAt && (
                 <>
                   <p className="text-gray-400 text-sm">
                     {new Date(blog.createdAt).toLocaleDateString("en-US", {
@@ -99,7 +99,7 @@ export default function BlogDetailCard() {
               )}
 
               <p className="text-gray-300 text-lg leading-relaxed whitespace-pre-line mb-8 mt-10">
-                {blog.description}
+                {blog?.description}
               </p>
 
               <div className="flex justify-end mt-10">
